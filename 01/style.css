@@ -5,10 +5,8 @@
     position: absolute;
     bottom: 23px;
     right: 28px;
-    /*height:550px;*/
-    /*height:100%;*/
     resize: both;
-    z-index: 10;
+    z-index: 10001;
 }
 
 #chatheader{
@@ -17,8 +15,10 @@
     background-color: aquamarine;
     height:10%;
     width:85%;
-    top:0px;
+    /*top:0px;*/
     font-size: 24;
+    visibility: visible;
+    z-index: 10001;
 }
 
 #textbox{
@@ -35,12 +35,13 @@
     box-sizing: content-box;
     padding-top:0;
     padding-bottom: 0;
+    font-family: "Times New Roman", Times, serif;
 }
 
 #hide{
     position: absolute;
     background-color: aquamarine;
-    top:0;
+    /*top:0;*/
     right:0;
     cursor: pointer;
     height:10%;
@@ -48,6 +49,8 @@
     font-size: 30;
     text-align: center;
     border: 2px solid green;
+    visibility: visible;
+    z-index: 10001;
 }
 
 #send{
@@ -73,4 +76,44 @@
     margin-top:20%;
     margin-bottom: 15%;
     width:100%;
+    font-family: "Times New Roman", Times, serif;
+}
+.msg-block{
+    display: table;
+    width:100%;
+}
+
+.time{
+    display: inline-block;
+    padding-right:5px;
+    /*width:12%;*/
+}
+.avatar{
+    display: inline-block;
+    padding-right:5px;
+}
+.message{
+    display: inline-block;
+}
+
+.hidden{
+    height:100px;
+}
+
+#hidden-block{
+    visibility: hidden;
+    min-width: 330px;
+    min-height: 500px;
+    position: absolute;
+    bottom: 23px;
+    right: 28px;
+    resize: both;
+}
+
+.hide{
+    bottom: 23px;
+}
+
+.show{
+    top: 0px;
 }
