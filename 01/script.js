@@ -1,84 +1,57 @@
-let state = false;
 window.onload = function () {
-    if (localStorage.getItem("state") == null) {
-        localStorage.setItem("state", state);
-        console.log("if");
+    let state;
+    if (localStorage.getItem("state") === undefined) {
+        localStorage.setItem("state", false);
+        state = false;
     }
     else {
-        state = localStorage.getItem("state");
-        console.log("else");
+        state = JSON.parse(localStorage.getItem("state"));
     }
     (function chat() {
-        initializeChat();
+        initializeChat(state);
         let text = document.getElementById("messagebox");
         let msg = document.getElementById("textbox");
         let sendButton = document.getElementById("send");
         let hideButton = document.getElementById("hide");
         sendButton.addEventListener("click", function () {
-    
             let message = msg.value;
-            let nowTime = new Date();
-            let mesBlock = document.createElement("div");
-            mesBlock.classList.add("msg-block");
-            let timeBlock = document.createElement("div");
-            let avatarBlock = document.createElement("div");
-            let textMsgBlock = document.createElement("div");
-            timeBlock.classList.add("time");
-            avatarBlock.classList.add("avatar");
-            textMsgBlock.classList.add("message");
-            let time = ("0" + nowTime.getHours()).slice(-2) + ":" + ("0" + nowTime.getMinutes()).slice(-2);
             msg.value = "";
-            let timeNode = document.createTextNode(time);
-            let avatarNode = document.createTextNode("Me:");
-            let messageNode = document.createTextNode(message);
-            timeBlock.appendChild(timeNode);
-            avatarBlock.appendChild(avatarNode);
-            textMsgBlock.appendChild(messageNode);
-            mesBlock.appendChild(timeBlock);
-            mesBlock.appendChild(avatarBlock);
-            mesBlock.appendChild(textMsgBlock);
-            text.appendChild(mesBlock);
-            //add logic for sending message
+            addMessage(message,"Me",getTime(),text);
+            saveToLocalStorage(message,"Me",getTime());
+            //set Timeout for emulating delay before answering
+            setTimeout(function(){
+                botAnswer(message,text);
+            },15000);
         });
         hideButton.addEventListener("click", function () {
+            state = !state;
             if(state){
                 document.getElementById("wrapper").style.display = "block";
-                document.getElementById("chatheader").classList.remove("hide");
-                document.getElementById("chatheader").classList.add("show");
-                document.getElementById("hide").classList.remove("hide");
-                document.getElementById("hide").classList.add("show");
             }
             else {
                 document.getElementById("wrapper").style.display = "none";
-                document.getElementById("chatheader").classList.add("hide");
-                document.getElementById("chatheader").classList.remove("show");
-                document.getElementById("hide").classList.add("hide");
-                document.getElementById("hide").classList.remove("show");
             }
-            state = !state;
+            document.getElementById("chatheader").classList.toggle("hide");
+            document.getElementById("hide").classList.toggle("hide");
+            document.getElementById("chatheader").classList.toggle("show");
+            document.getElementById("hide").classList.toggle("show");
             localStorage.setItem("state", state);
-            console.log(state);
         });
     })();
 }
 
 
-
-
-
-function initializeChat() {
-    var newChatWindow = document.createElement("div");
-    var hideChatWindow = document.createElement("div");
-    var chatHeader = document.createElement("div");
-    var inputBox = document.createElement("textarea");
+function initializeChat(state) {
+    let newChatWindow = document.createElement("div");
+    let hideChatWindow = document.createElement("div");
+    let chatHeader = document.createElement("div");
+    let inputBox = document.createElement("textarea");
     //chatheader and hideButton must be on the same line not being removed
-    var hideButton = document.createElement("button");
-    var sendButton = document.createElement("button");
-    var messageBox = document.createElement("div");
+    let hideButton = document.createElement("button");
+    let sendButton = document.createElement("button");
+    let messageBox = document.createElement("div");
     hideChatWindow.appendChild(hideButton);
     hideChatWindow.appendChild(chatHeader);
-    /*hideButton.classList.add("show");
-    chatHeader.classList.add("show");*/
     newChatWindow.appendChild(inputBox);
     newChatWindow.appendChild(sendButton);
     newChatWindow.appendChild(messageBox);
@@ -94,8 +67,76 @@ function initializeChat() {
     chatHeader.innerHTML = "ChatName";
     sendButton.innerHTML = "Send";
     hideButton.innerHTML = "_";
-    newChatWindow.style.display = "none";
-    chatHeader.classList.add("hide");
-    hideButton.classList.add("hide");
+    if(state){
+        newChatWindow.style.display = "block";
+        chatHeader.classList.add("show");
+        hideButton.classList.add("show");
+    }
+    else {
+        newChatWindow.style.display = "none";
+        chatHeader.classList.add("hide");
+        hideButton.classList.add("hide");
+    }
+    if(localStorage.getItem("messages")) {
+        messageBox.innerHTML = "";
+        console.log(localStorage.getItem("messages"));
+        restoreMsgHistory(messageBox);
+    }
     //check if set id as code below is good practice
 };
+
+function botAnswer(msg,htmlMsgBlock){
+    let botAnswerMessage = msg.toUpperCase();
+    addMessage(botAnswerMessage,"Bot",getTime(),htmlMsgBlock);
+    saveToLocalStorage(botAnswerMessage,"Bot",getTime());
+}
+
+function addMessage(msg,role,time,HTMLElement){
+    let mesBlock = document.createElement("div");
+    mesBlock.classList.add("msg-block");
+    let timeBlock = document.createElement("div");
+    let avatarBlock = document.createElement("div");
+    let textMsgBlock = document.createElement("div");
+    timeBlock.classList.add("time");
+    avatarBlock.classList.add("avatar");
+    textMsgBlock.classList.add("message");
+    let timeNode = document.createTextNode(time);
+    let avatarNode = document.createTextNode(role+":");
+    let messageNode = document.createTextNode(msg);
+    timeBlock.appendChild(timeNode);
+    avatarBlock.appendChild(avatarNode);
+    textMsgBlock.appendChild(messageNode);
+    mesBlock.appendChild(timeBlock);
+    mesBlock.appendChild(avatarBlock);
+    mesBlock.appendChild(textMsgBlock);
+    HTMLElement.appendChild(mesBlock);
+}
+
+function saveToLocalStorage(msg,role,date){
+    let msgObj = {};
+    let messages;
+    msgObj.date = date;
+    msgObj.msg = msg;
+    msgObj.role = role;
+    if(localStorage.messages) {
+        messages = JSON.parse(localStorage.getItem("messages"));
+    } else {
+        messages = [];
+    }
+    messages.push(msgObj);
+    localStorage.setItem("messages",JSON.stringify(messages));
+}
+
+
+function restoreMsgHistory(HTMLElement) {
+    let messages = JSON.parse(localStorage.getItem("messages"));
+    messages.forEach(function(element){
+        addMessage(element.msg,element.role,element.date,HTMLElement);
+    });
+}
+
+function getTime() {
+    let nowTime = new Date();
+    let time = ("0" + nowTime.getHours()).slice(-2) + ":" + ("0" + nowTime.getMinutes()).slice(-2);
+    return time;
+}
