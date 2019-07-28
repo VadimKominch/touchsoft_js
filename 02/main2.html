@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+<!--link rel="stylesheet" href="https://gitcdn.link/repo/VadimKominch/fdfa07dcf877fa5a388dc3a0c86771bd/raw/567808405eb7b1887b330b289a3c0485b0020237/style.css"--> 
+</head>
+    <body>
+            <script src="https://www.gstatic.com/firebasejs/6.3.1/firebase-app.js"></script>
+            <script src="script.js"></script>
+            <script>
+            chat.initChat({
+            chatTitle: "MyChat",
+            botName: "bot Petya",
+            chatUrl: "https://chat-be318.firebaseio.com",
+            position: "right",
+            cssClass: "chat-class",
+            isMinimize: true,
+            isDraggable: true,
+            requireName: true,
+            displayingTime: false,
+            network: "XHR"
+            });
+            chat.startChat();
+            </script>
+    </body>
+</html>

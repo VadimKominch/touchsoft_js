@@ -16,6 +16,7 @@ body{
     display: table;
     margin-right: auto;
     margin-left: auto;
+    background-color: azure;
 }
 
 input[type="checkbox"]{
@@ -24,4 +25,18 @@ input[type="checkbox"]{
 
 legend{
     font-size:14px;
+}
+
+input,select{
+    margin-bottom: 10px;
+}
+
+input[type="text"],input[type="url"]{
+    width:50%;
+}
+div{
+    vertical-align: middle;
+}
+body{
+    background-color: aliceblue;
 }

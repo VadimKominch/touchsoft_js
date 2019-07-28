@@ -9,11 +9,25 @@
 <body>
         <fieldset class="form">
             <legend>Chat configurator</legend>
-                Choose if you want to hide the chat <input type="checkbox" name="hidability" id="choice_hide"><br>
-                Choose if you want to drag the chat <input type="checkbox" name="dragability" id="choice_drag"><br>
-                Display data/time <input type="checkbox" name="timability" id="choice_time"><br>
-                Enter the chat name <input type="text" name="chatHeader" id="name" defaultValue="chat">
+            <div>Chat title <input type="text" name="chatHeader" placeholder="title" defaultValue="title"><br></div>
+            <div>Bot name <input type="text" name="botName" placeholder="Bot" defaultValue="Bot"><br></div>
+            <div>Chat url <input type="url" name="url" placeholder="https://example.firebase.com" pattern="https://.*" size="35"><br></div>
+            <div>                Position
+                <select name="position">
+                    <option>left</option>
+                    <option>right</option>
+                  </select><br></div>
+            <div>CSS class <input type="text" name="cssClass" placeholder="chat-class"><br></div>
+            <div><h2>UI</h2></div>
+            <div>Allow to minimize<input type="checkbox" class="checkboxList" name="hidability" id="choice_hide"><br></div>
+            <div>Allow to drag<input type="checkbox" class="checkboxList" name="dragability" id="choice_drag"><br></div>
+            <div>Require name<input type="checkbox" class="checkboxList" name="requiring_name" id="require_name"><br></div>
+            <div>Display data/time <input type="checkbox" class="checkboxList" name="displayTime" id="choice_time"><br></div>
+            <div>Network     <input type="radio" name="network" value="XHR" checked="checked"> XHR<input type="radio" name="network" value="fetch">fetch<br></div>
+           <div>Use next code:
+               <div id="paste_code"></div>
+           </div>
         </fieldset>
-        <script src="script.js"></script>
+        <script src="config.js"></script>
 </body>
 </html>
