@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operator page</title>
+  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+  <link rel="stylesheet" href="operator.css">
+</head>
+
+<body>
+  <script src="https://www.gstatic.com/firebasejs/6.3.1/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#config-web-app -->
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyCgFgMYLljkcHcXFATzdLNF5592aEYWRLY",
+      authDomain: "chat-be318.firebaseapp.com",
+      databaseURL: "https://chat-be318.firebaseio.com",
+      projectId: "chat-be318",
+      storageBucket: "chat-be318.appspot.com",
+      messagingSenderId: "857426828664",
+      appId: "1:857426828664:web:2d120603d48ce514"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
+  <div class="row">
+    <div class="left" style="background-color:#bbb;">
+      <input type="text" id="myFilter" placeholder="Filter..">
+      <select id="mySelect">
+          <option value="" disabled selected hidden>Sort</option>
+        <option value="name_sort">Sort by name</option>
+        <option value="2">Show unreaad messages</option>
+        <option value="3">Show online users</option>
+        <option value="4"></option>
+      </select>
+      <ul id="myMenu">
+      </ul>
+    </div>
+
+    <div class="right row" style="background-color:#ddd;">
+      <div class="wind">
+        <div class="left inner">
+          <div id="user_messages" class="line"></div>
+          <textarea id="operator_input"></textarea>
+          <button class="sendButton">Send</button>
+        </div>
+        <div class="right inner">
+          <div id="control_panel" class="line"></div>
+        </div>
+        <button data-rel="back"
+          class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right button">Close</button>
+      </div>
+    </div>
+
+  </div>
+  <script src="operator_page_script.js"></script>
+</body>
+
+</html>

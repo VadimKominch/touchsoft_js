@@ -4,6 +4,7 @@ var chat = (function () {
     function setConfig(obj) {
         config = obj;
         config.userName="";
+        setId();
     };
 
     function startChat() {
@@ -219,7 +220,7 @@ var chat = (function () {
     function savetoDb(msg, role, date){
         if(config.network==="XHR"){
             let req = new XMLHttpRequest();
-            req.open("POST",config.chatUrl +"/"+ id + '/messages.json',true);
+            req.open("POST",config.chatUrl +"/"+ config.userId + '/messages.json',true);
             req.setRequestHeader('Content-Type', 'application/json');
             req.send(
                 JSON.stringify(
@@ -231,7 +232,7 @@ var chat = (function () {
                 )    
             );
         } else {
-            fetch(config.chatUrl +"/"+ id + '/messages.json', {
+            fetch(config.chatUrl +"/"+ config.userId + '/messages.json', {
                 method: 'POST',
                 body: JSON.stringify(
                     {
@@ -248,6 +249,41 @@ var chat = (function () {
         }
     }
 
+    function setId(){
+        fetch(config.chatUrl + '/info.json', {
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(function(response){
+            return response.json();
+        })
+        .then(function(value){
+            console.log(value.id);
+            config.userId = value.id;
+            //updateUserId(value.id++);
+            let newNum = value.id+1;
+            return newNum;
+        })
+         .then(updateUserId)
+    }
+
+
+    function updateUserId(value){
+        fetch(config.chatUrl + '/info.json', {
+            method: 'PUT',
+            body: JSON.stringify(
+                {
+                    id:value,
+                },
+            ),
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        });
+    }
 
     function initDbConnection(){
         var firebaseConfig = {
